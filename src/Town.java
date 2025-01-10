@@ -11,6 +11,7 @@ public class Town
     private String printMessage;
     private boolean toughTown;
     private boolean seeking = true;
+    private boolean dead = false;
     private static boolean treasure1 = false;
     private static boolean treasure2 = false;
     private static boolean treasure3 = false;
@@ -129,7 +130,12 @@ public class Town
         }
         if (hunter.getGold() <= 0){
             printMessage += "\nYou lost all your gold and lost the game!";
+            dead = true;
         }
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     public void huntTreasure()
@@ -139,6 +145,7 @@ public class Town
             if (chance == 0) {
                 if (treasure1) {
                     printMessage = "You already have the golden goose, so you discard it.";
+                    seeking = false;
                 }
                 else {
                     treasure1 = true;
@@ -149,6 +156,7 @@ public class Town
             if (chance == 1) {
                 if (treasure2) {
                     printMessage = "You already have the magic reindeer, so you discard it.";
+                    seeking = false;
                 }
                 else {
                     treasure2 = true;
@@ -159,6 +167,7 @@ public class Town
             if (chance == 2) {
                 if (treasure3) {
                     printMessage = "You already have the cat scratcher, so you discard it.";
+                    seeking = false;
                 }
                 else {
                     treasure3 = true;
@@ -168,11 +177,19 @@ public class Town
             }
             if (chance == 3) {
                 printMessage = "You did not find anything.";
+                seeking = false;
             }
         }
         else {
             printMessage = "You cannot find anymore treasure. Please go to the next town.";
         }
+        if (checkTreasure()) {
+            printMessage += "\nYou got all the treasure and won the game!";
+        }
+    }
+
+    public boolean checkTreasure() {
+        return treasure1 && treasure2 && treasure3;
     }
 
     public String toString()
